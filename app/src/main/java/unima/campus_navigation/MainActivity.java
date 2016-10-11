@@ -1,8 +1,11 @@
 package unima.campus_navigation;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabSelectedListener;
@@ -25,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
 						//Snackbar.make(coordinatorLayout, "Location Item Selected", Snackbar.LENGTH_LONG).show();
 						break;
 					case R.id.favorite_item:
+						Intent i=new Intent(getApplicationContext(),ImageActivity.class);
+						startActivity(i);
 						//Snackbar.make(coordinatorLayout, "Favorite Item Selected", Snackbar.LENGTH_LONG).show();
 						break;
 				}

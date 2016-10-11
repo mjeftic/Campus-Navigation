@@ -15,6 +15,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ImageActivity"
+            android:label="">
+        </activity>
+        <gallery android:name=".Gallery_Activity"></gallery>
+        <baseadapter android:name=".ImageAdapter" />
     </application>
 
 </manifest>

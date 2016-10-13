@@ -1,13 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent" android:layout_height="fill_parent" >
+
     <RelativeLayout android:id="@+id/gallery_paging"
         android:layout_width="fill_parent"
-        android:layout_height="1200dp" >
-        <unima.campus_navigation.Gallery_Activity
-            android:id="@+id/mygallery01"
-            android:layout_width="fill_parent"
-            android:layout_height="800dp"
-            android:fadingEdge="none" android:spacing="0px" />
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="138dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
         <LinearLayout android:id="@+id/image_count"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -16,5 +17,28 @@
             android:gravity="center"
             android:orientation="horizontal" >
         </LinearLayout>
+
+        <unima.campus_navigation.Gallery_Activity
+            android:id="@+id/mygallery01"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:fadingEdge="none" android:spacing="0px"
+            android:layout_marginBottom="94dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
     </RelativeLayout>
+
+    <TextView
+        android:text="@string/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="88dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginBottom="38dp"
+        android:id="@+id/textView2" />
+
 </RelativeLayout>

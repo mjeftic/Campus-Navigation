@@ -1,8 +1,15 @@
 package unima.campus_navigation.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -12,6 +19,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mancj.materialsearchbar.MaterialSearchBar;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabSelectedListener;
 
@@ -26,22 +34,47 @@ import static unima.campus_navigation.R.id.map;
 public class MainActivity extends AppCompatActivity implements RoomProvider, OnMapReadyCallback, MaterialSearchBar.OnSearchActionListener{
 
 	CoordinatorLayout coordinatorLayout;
-	private MaterialSearchBar searchBar;
+    MaterialSearchView searchView;
+    Toolbar toolbar;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+        searchView = (MaterialSearchView) findViewById(R.id.search_view);
+        toolbar = (Toolbar)  findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        List<String> lastSearches = getRoomStrings();
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                //Do some magic
+                return false;
+            }
+        });
 
-		searchBar = (MaterialSearchBar) findViewById(R.id.searchBar);
-		searchBar.setHint("Search a room");
-		//enable searchbar callbacks
-		searchBar.setOnSearchActionListener(this);
-		//restore last queries from disk
-		searchBar.setLastSuggestions(lastSearches);
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                searchView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+                searchView.setVisibility(View.GONE);
+            }
+        });
+
+        String[] array = new String[getRoomStrings().size()];
+
+        searchView.setSuggestions(getRoomStrings().toArray(array));
 
 
 
@@ -71,6 +104,41 @@ public class MainActivity extends AppCompatActivity implements RoomProvider, OnM
 
 	}
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.search_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
+
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (searchView.isSearchOpen()) {
+            searchView.closeSearch();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == MaterialSearchView.REQUEST_VOICE && resultCode == RESULT_OK) {
+            ArrayList<String> matches = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            if (matches != null && matches.size() > 0) {
+                String searchWrd = matches.get(0);
+                if (!TextUtils.isEmpty(searchWrd)) {
+                    searchView.setQuery(searchWrd, false);
+                }
+            }
+
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
@@ -93,17 +161,16 @@ public class MainActivity extends AppCompatActivity implements RoomProvider, OnM
     public void onButtonClicked(int i) {
         switch (i){
             case MaterialSearchBar.BUTTON_NAVIGATION:
-               // drawer.openDrawer(Gravity.LEFT);
                 break;
-            case MaterialSearchBar.BUTTON_SPEECH:
-               // openVoiceRecognizer();
         }
     }
 
     @Override
 	public void onMapReady(GoogleMap googleMap) {
-		googleMap.addMarker(new MarkerOptions().position(new LatLng(49.482534, 8.465205)).title("Mannheim"));
-		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(49.482534, 8.465205), 16));
+        for(Room room : getRoomObjects()){
+            googleMap.addMarker(new MarkerOptions().position(new LatLng(room.getLongitude(), room.getLatitude())).title(room.getName()));
+        }
+		googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(49.482534, 8.465205), 12));
 	}
 
     @Override
@@ -124,13 +191,13 @@ public class MainActivity extends AppCompatActivity implements RoomProvider, OnM
 
     public List<Room> generateMockData(){
         List<Room> rooms = new ArrayList<>();
-        Room S108 = new Room("S108",49.0,49.0);
-        Room S107 = new Room("S107",49.0,49.0);
-        Room S106 = new Room("S106",49.0,49.0);
-        Room S105 = new Room("S105",49.0,49.0);
-        Room S104 = new Room("S104",49.0,49.0);
-        Room S103 = new Room("S103",49.0,49.0);
-        Room S102 = new Room("S102",49.0,49.0);
+        Room S108 = new Room("S108",49.481534, 8.465205);
+        Room S107 = new Room("S107",49.482534, 8.466205);
+        Room S106 = new Room("S106",49.482534, 8.464205);
+        Room S105 = new Room("S105",49.482534, 8.463205);
+        Room S104 = new Room("S104",49.482534, 8.462205);
+        Room S103 = new Room("S103",49.484534, 8.465205);
+        Room S102 = new Room("S102",49.483534, 8.465205);
         rooms.add(S102);
         rooms.add(S103);
         rooms.add(S104);

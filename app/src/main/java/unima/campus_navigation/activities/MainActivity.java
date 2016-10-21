@@ -105,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         //Snackbar.make(coordinatorLayout, "Location Item Selected", Snackbar.LENGTH_LONG).show();
                         break;
                     case R.id.favorite_item:
+                        startActivity(new Intent(MainActivity.this, IndoorNavigationActivity.class));
                         //Snackbar.make(coordinatorLayout, "Favorite Item Selected", Snackbar.LENGTH_LONG).show();
                         break;
                 }

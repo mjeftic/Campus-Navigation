@@ -1,10 +1,12 @@
 package unima.campus_navigation.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
                     startNavigation(room.getLongitude(), room.getLatitude(),room.getName());
                 }
-                return false;
+                return true;
             }
 
             @Override
@@ -188,14 +190,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(49.482534, 8.465205), 15));
     }
 
-    public void startNavigation(double longitude, double latitude, String locationName){
+    public void startNavigation(final double longitude, final double latitude, final String locationName){
 
-        String urlAddress = "http://maps.google.com/maps?q="+ longitude + ","+ latitude + "("
-                + locationName + ")&iwloc=A&hl=es";
-        Intent intent = new Intent(Intent.ACTION_VIEW,
-                                   Uri.parse(urlAddress));
 
-        startActivity(intent);
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Navigation");
+        builder.setMessage("Do you want to be navigated to the room");
+
+        String positiveText = getString(android.R.string.ok);
+        builder.setPositiveButton(positiveText,
+                                  new DialogInterface.OnClickListener() {
+                                      @Override
+                                      public void onClick(DialogInterface dialog, int which) {
+                                          // positive button logic
+                                          String urlAddress = "http://maps.google.com/maps?q="+ longitude + ","+ latitude + "("
+                                                  + locationName + ")&iwloc=A&hl=es";
+                                          Intent intent = new Intent(Intent.ACTION_VIEW,
+                                                                     Uri.parse(urlAddress));
+
+                                          startActivity(intent);
+                                      }
+                                  });
+
+        String negativeText = getString(android.R.string.cancel);
+        builder.setNegativeButton(negativeText,
+                                  new DialogInterface.OnClickListener() {
+                                      @Override
+                                      public void onClick(DialogInterface dialog, int which) {
+                                          // negative button logic
+                                      }
+                                  });
+
+        AlertDialog dialog = builder.create();
+        // display dialog
+        dialog.show();
+
+
     }
 
 }

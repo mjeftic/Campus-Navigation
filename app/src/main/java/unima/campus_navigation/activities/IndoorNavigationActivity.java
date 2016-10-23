@@ -4,12 +4,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import unima.campus_navigation.R;
+import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 import unima.campus_navigation.util.ViewPagerAdapter;
 
 /**
@@ -21,6 +24,9 @@ public class IndoorNavigationActivity extends AppCompatActivity{
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
     private static final Integer[] IMAGES= {R.drawable.ic_action_action_search,R.drawable.ic_action_navigation_arrow_back};
+    private TextView bubbleField;
+    private List<String> bubbleStrings;
+
     private ArrayList<Integer> ImagesArray = new ArrayList<Integer>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +41,15 @@ public class IndoorNavigationActivity extends AppCompatActivity{
         mPager = (ViewPager) findViewById(R.id.pager);
 
 
-        mPager.setAdapter(new ViewPagerAdapter(IndoorNavigationActivity.this,ImagesArray));
+        bubbleField = (TextView) findViewById(R.id.textView2);
+
+        ProvideMockDataServiceImpl data = new ProvideMockDataServiceImpl();
+        bubbleStrings = data.getBubbleStrings();
+        mPager.setAdapter(new ViewPagerAdapter(IndoorNavigationActivity.this,ImagesArray,bubbleStrings));
 
 
-       // CirclePageIndicator indicator = (CirclePageIndicator)
+
+        // CirclePageIndicator indicator = (CirclePageIndicator)
         //        findViewById(R.id.indicator);
 
        // indicator.setViewPager(mPager);

@@ -23,7 +23,7 @@ public class IndoorNavigationActivity extends AppCompatActivity{
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-    private static final Integer[] IMAGES= {R.drawable.ic_action_action_search,R.drawable.ic_action_navigation_arrow_back};
+    private static final Integer[] IMAGES= {R.drawable.image1,R.drawable.image2,R.drawable.image3,R.drawable.image4,R.drawable.image5,R.drawable.image6,R.drawable.image7};
     private TextView bubbleField;
     private List<String> bubbleStrings;
 

@@ -60,14 +60,6 @@ public class IndoorNavigationActivity extends AppCompatActivity{
                 mPager.setCurrentItem(currentPage++, true);
             }
         };
-        Timer swipeTimer = new Timer();
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 3000, 3000);
-
 
     }
 }

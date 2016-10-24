@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,40 +36,72 @@ import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, MaterialSearchBar.OnSearchActionListener {
 
-    CoordinatorLayout  coordinatorLayout;
-    MaterialSearchView searchView;
-    Toolbar            toolbar;
-    GoogleMap map;
-    SupportMapFragment mapFragment;
+    CoordinatorLayout    coordinatorLayout;
+    FloatingActionButton floatingActionButton;
+    MaterialSearchView   searchView;
+    Toolbar              toolbar;
+    GoogleMap            map;
+    SupportMapFragment   mapFragment;
+    String                     result       = "";
     ProvideMockDataServiceImpl dataProvider = new ProvideMockDataServiceImpl();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Room room = null;
+                if (result != null) {
+                    room = dataProvider.getRoomByName(result);
+                }
+                if (room != null) {
+                    startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
+                }
+            }
+        });
+
+        searchView.setSubmitOnClick(true);
+        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String query = (String) parent.getItemAtPosition(position);
+                result = query;
+                floatingActionButton.setVisibility(View.VISIBLE);
+                loadData(query);
+                searchView.closeSearch();
+            }
+        });
+
 
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                result = query;
+                floatingActionButton.setVisibility(View.VISIBLE);
                 Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
                 Room room = dataProvider.getRoomByName(query);
-                if(room!=null){
+                if (room != null) {
                     map.clear();
                     map.addMarker(new MarkerOptions().position(new LatLng(dataProvider.getRoomByName(query).getLongitude(),
-                                                                          dataProvider.getRoomByName(query).getLatitude()))
-                                          .title(dataProvider.getRoomByName(query).getName()));
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(dataProvider.getRoomByName(query).getLongitude(),
-                                                                                dataProvider.getRoomByName(query).getLatitude()),17));
+                                                                          dataProvider.getRoomByName(query).getLatitude())).title(
+                            dataProvider.getRoomByName(query).getName()));
+                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            new LatLng(dataProvider.getRoomByName(query).getLongitude(), dataProvider.getRoomByName(query).getLatitude()),
+                            17));
                     // Zoom in, animating the camera.
                     map.animateCamera(CameraUpdateFactory.zoomIn());
                     // Zoom out to zoom level 10, animating with a duration of 2 seconds.
                     map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
-                    startNavigation(room.getLongitude(), room.getLatitude(),room.getName());
+                    startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
                 }
-                return true;
+                return false;
             }
 
             @Override
@@ -187,11 +221,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         /*for (Room room : dataProvider.getRoomObjects()) {
             googleMap.addMarker(new MarkerOptions().position(new LatLng(room.getLongitude(), room.getLatitude())).title(room.getName()));
         }*/
-        map=googleMap;
+        map = googleMap;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(49.482534, 8.465205), 15));
     }
 
-    public void startNavigation(final double longitude, final double latitude, final String locationName){
+    public void startNavigation(final double longitude, final double latitude, final String locationName) {
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -199,34 +233,49 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         builder.setMessage("Do you want to be navigated to the room");
 
         String positiveText = getString(android.R.string.ok);
-        builder.setPositiveButton(positiveText,
-                                  new DialogInterface.OnClickListener() {
-                                      @Override
-                                      public void onClick(DialogInterface dialog, int which) {
-                                          // positive button logic
-                                          String urlAddress = "http://maps.google.com/maps?q="+ longitude + ","+ latitude + "("
-                                                  + locationName + ")&iwloc=A&hl=es";
-                                          Intent intent = new Intent(Intent.ACTION_VIEW,
-                                                                     Uri.parse(urlAddress));
+        builder.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // positive button logic
+                String urlAddress = "http://maps.google.com/maps?q=" + longitude + "," + latitude + "(" + locationName + ")&iwloc=A&hl=es";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress));
 
-                                          startActivity(intent);
-                                      }
-                                  });
+                startActivity(intent);
+            }
+        });
 
         String negativeText = getString(android.R.string.cancel);
-        builder.setNegativeButton(negativeText,
-                                  new DialogInterface.OnClickListener() {
-                                      @Override
-                                      public void onClick(DialogInterface dialog, int which) {
-                                          // negative button logic
-                                      }
-                                  });
+        builder.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // negative button logic
+            }
+        });
 
         AlertDialog dialog = builder.create();
         // display dialog
         dialog.show();
 
 
+    }
+
+    public void loadData(final String query) {
+        Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
+        Room room = dataProvider.getRoomByName(query);
+
+        if (room != null) {
+            map.clear();
+            map.addMarker(new MarkerOptions().position(
+                    new LatLng(dataProvider.getRoomByName(query).getLongitude(), dataProvider.getRoomByName(query).getLatitude())).title(
+                    dataProvider.getRoomByName(query).getName()));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(dataProvider.getRoomByName(query).getLongitude(), dataProvider.getRoomByName(query).getLatitude()), 17));
+            // Zoom in, animating the camera.
+            map.animateCamera(CameraUpdateFactory.zoomIn());
+            // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+            map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+            startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
+        }
     }
 
 }

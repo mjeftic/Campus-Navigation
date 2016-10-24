@@ -3,10 +3,10 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/location_item"
-        android:icon="@drawable/ic_location_on_white_24dp"
-        android:title="Outdoor Navigation" />
+        android:icon="@drawable/ic_explore_white_24dp"
+        android:title="Overview" />
     <item
         android:id="@+id/favorite_item"
-        android:icon="@drawable/ic_favorite_white_24dp"
+        android:icon="@drawable/ic_home_white_24dp"
         android:title="Indoor Navigation" />
 </menu>

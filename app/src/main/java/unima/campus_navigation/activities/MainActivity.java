@@ -21,6 +21,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.mancj.materialsearchbar.MaterialSearchBar;
@@ -54,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +69,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+
+        searchView.setVoiceSearch(true);
 
         searchView.setSubmitOnClick(true);
         searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -85,22 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public boolean onQueryTextSubmit(String query) {
                 result = query;
                 floatingActionButton.setVisibility(View.VISIBLE);
-                Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
-                Room room = dataProvider.getRoomByName(query);
-                if (room != null) {
-                    map.clear();
-                    map.addMarker(new MarkerOptions().position(new LatLng(dataProvider.getRoomByName(query).getLongitude(),
-                                                                          dataProvider.getRoomByName(query).getLatitude())).title(
-                            dataProvider.getRoomByName(query).getName()));
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                            new LatLng(dataProvider.getRoomByName(query).getLongitude(), dataProvider.getRoomByName(query).getLatitude()),
-                            17));
-                    // Zoom in, animating the camera.
-                    map.animateCamera(CameraUpdateFactory.zoomIn());
-                    // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-                    map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
-                    startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
-                }
+                zoom(query);
                 return false;
             }
 
@@ -189,12 +179,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //save last queries to disk
-        //saveSearchSuggestionToDisk(searchBar.getLastSuggestions());
-    }
 
     @Override
     public void onSearchStateChanged(boolean enabled) {
@@ -260,22 +244,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void loadData(final String query) {
-        Toast.makeText(getApplicationContext(), query, Toast.LENGTH_SHORT).show();
-        Room room = dataProvider.getRoomByName(query);
+        zoom(query);
+    }
 
-        if (room != null) {
-            map.clear();
-            map.addMarker(new MarkerOptions().position(
-                    new LatLng(dataProvider.getRoomByName(query).getLongitude(), dataProvider.getRoomByName(query).getLatitude())).title(
-                    dataProvider.getRoomByName(query).getName()));
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(dataProvider.getRoomByName(query).getLongitude(), dataProvider.getRoomByName(query).getLatitude()), 17));
-            // Zoom in, animating the camera.
-            map.animateCamera(CameraUpdateFactory.zoomIn());
-            // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-            map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
-            startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
-        }
+    public void zoom(String query) {
+        map.clear();
+        String roomName = dataProvider.getRoomByName(query).getName();
+        double latitudeRoom = dataProvider.getRoomByName(query).getLatitude();
+        double longitudeRoom = dataProvider.getRoomByName(query).getLongitude();
+        map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_48dp)).position(
+                new LatLng(longitudeRoom, latitudeRoom)).title(roomName)).showInfoWindow();
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeRoom, latitudeRoom), 15));
+        // Zoom in, animating the camera.
+        map.animateCamera(CameraUpdateFactory.zoomIn());
+        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+        map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+
+
     }
 
 }

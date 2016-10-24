@@ -44,13 +44,13 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
 
     public List<Room> generateMockData(){
         List<Room> rooms = new ArrayList<>();
-        Room S108 = new Room("S108",49.481534, 8.465205);
-        Room S107 = new Room("S107",49.482534, 8.466205);
-        Room S106 = new Room("S106",49.482534, 8.464205);
-        Room S105 = new Room("S105",49.482534, 8.463205);
-        Room S104 = new Room("S104",49.482534, 8.462205);
-        Room S103 = new Room("S103",49.484534, 8.465205);
-        Room S102 = new Room("S102",49.483534, 8.465205);
+        Room S108 = new Room("S108",49.481534, 8.465205, 1);
+        Room S107 = new Room("S107",49.482534, 8.466205, 1);
+        Room S106 = new Room("S106",49.482534, 8.464205, 0);
+        Room S105 = new Room("S105",49.482534, 8.463205, 0);
+        Room S104 = new Room("S104",49.482534, 8.462205, 0);
+        Room S103 = new Room("S103",49.484534, 8.465205, 1);
+        Room S102 = new Room("S102",49.483534, 8.465205, 5);
         rooms.add(S102);
         rooms.add(S103);
         rooms.add(S104);

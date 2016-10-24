@@ -8,12 +8,14 @@ public class Room {
     private double longitude;
     private double latitude;
     private String name;
+    private int floor;
 
 
-    public Room(String name, double longitude, double latitude) {
+    public Room(String name, double longitude, double latitude, int floor) {
         this.name = name;
         this.longitude = longitude;
         this.latitude = latitude;
+        this.floor = floor;
     }
 
     public String getName() {
@@ -40,4 +42,11 @@ public class Room {
         this.longitude = longitude;
     }
 
+    public int getFloor() {
+        return floor;
+    }
+
+    public void setFloor(int floor) {
+        this.floor = floor;
+    }
 }

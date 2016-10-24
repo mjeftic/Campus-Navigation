@@ -2,29 +2,36 @@ package unima.campus_navigation.model;
 
 import android.location.Location;
 
-import java.util.Date;
-
 /**
  * Created by Marko on 21.10.16.
  */
 
 public class Event {
+    private String id;
     private Location location;
     private String title;
     private String description;
     private int    imagePath;
-    private Date   date;
+    private long   timestamp;
     private String url;
 
-    public Event(Location location, String title, String description, int imagePath, Date date, String url) {
+    public Event(String id, Location location, String title, String description, int imagePath, long timestamp, String url) {
+        this.id = id;
         this.location = location;
         this.title = title;
         this.description = description;
         this.imagePath = imagePath;
-        this.date = date;
+        this.timestamp = timestamp;
         this.url = url;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public Location getLocation() {
         return location;
@@ -58,12 +65,12 @@ public class Event {
         this.imagePath = imagePath;
     }
 
-    public Date getDate() {
-        return date;
+    public long getTimestamp() {
+        return timestamp;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getUrl() {

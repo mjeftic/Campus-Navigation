@@ -1,10 +1,12 @@
 package unima.campus_navigation.service;
 
 import android.util.Log;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import unima.campus_navigation.R;
 import unima.campus_navigation.model.Room;
 
 /**
@@ -60,6 +62,7 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         rooms.add(S108);
         return rooms;
     }
+
     public List<String> getBubbleStrings() {
         List<String> bubbles = generateMockDataBubble();
         return bubbles;

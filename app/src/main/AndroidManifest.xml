@@ -9,11 +9,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activities.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activities.IndoorNavigationActivity" />
 
@@ -21,7 +16,13 @@
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyCtyEBfGyPkNatvUfAmFpMJ4u5psxyc-V4" />
 
-        <activity android:name=".activities.NavigationDrawerActivity" />
+        <activity android:name=".activities.NavigationDrawerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>>
 
     </application>
 

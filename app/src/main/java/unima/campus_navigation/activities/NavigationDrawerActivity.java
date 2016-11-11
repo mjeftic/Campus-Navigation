@@ -12,25 +12,26 @@ import android.view.MenuItem;
 import android.view.View;
 
 import unima.campus_navigation.R;
+import unima.campus_navigation.util.MyAdapter;
 
 public class NavigationDrawerActivity extends AppCompatActivity {
     //First We Declare Titles And Icons For Our Navigation Drawer List View
     //This Icons And Titles Are holded in an Array as you can see
 
     String TITLES[] = {"Home", "News", "Events", "Portal2Lectures", "Library", "Mensa", "CampusMap", "Public Transport", "Student Organization", "University Contacts"};
-    int ICONS[] = {R.drawable.home, R.drawable.speakerphone, R.drawable.calendar, R.drawable.clock, R.drawable.bookmarks, R.drawable.coffee, R.drawable.map, R.drawable.model, R.drawable.people, R.drawable.personadd};
+    int    ICONS[]  = {R.drawable.home, R.drawable.speakerphone, R.drawable.calendar, R.drawable.clock, R.drawable.bookmarks, R.drawable.coffee, R.drawable.map, R.drawable.model, R.drawable.people, R.drawable.personadd};
 
     //Similarly we Create a String Resource for the name and email in the header view
     //And we also create a int resource for profile picture in the header view
 
-    String NAME = "";
-    String EMAIL = "";
-    int PROFILE = R.drawable.castle;
+    String NAME    = "";
+    String EMAIL   = "";
+    int    PROFILE = R.drawable.castle;
 
-    RecyclerView mRecyclerView;                           // Declaring RecyclerView
-    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
+    RecyclerView               mRecyclerView;                           // Declaring RecyclerView
+    RecyclerView.Adapter       mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-    DrawerLayout Drawer;                                  // Declaring DrawerLayout
+    DrawerLayout               Drawer;                                  // Declaring DrawerLayout
 
     ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle
 
@@ -38,7 +39,7 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_navigation_drawer);
 
     /* Assinging the toolbar object ot the view
     and setting the the Action bar to our toolbar
@@ -47,12 +48,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
 
         mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
-        mAdapter = new MyAdapter(TITLES, ICONS, NAME, EMAIL, PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+        mAdapter = new MyAdapter(TITLES, ICONS, NAME, EMAIL,
+                                 PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
         // And passing the titles,icons,header view name, header view email,
         // and header view profile picture
 
@@ -83,7 +84,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         }; // Drawer Toggle Object Made
         Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
-
     }
 
 

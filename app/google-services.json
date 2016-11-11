@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "872717904605",
+    "firebase_url": "https://wegweiser-57b85.firebaseio.com",
+    "project_id": "wegweiser-57b85",
+    "storage_bucket": "wegweiser-57b85.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872717904605:android:4d0169ee4d5b8042",
+        "android_client_info": {
+          "package_name": "unima.campus_navigation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "872717904605-bdpkpv5c2r5j1glveu0u68a6fp97kcsm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBccUl8mIwrvG67Nvk7j9wUlfFfgLdPHiA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,6 @@
 package unima.campus_navigation.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,11 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import unima.campus_navigation.R;
 import unima.campus_navigation.util.MyAdapter;
 
-public class NavigationDrawerActivity extends AppCompatActivity {
+public class NavigationDrawerActivity extends AppCompatActivity implements View.OnClickListener {
     //First We Declare Titles And Icons For Our Navigation Drawer List View
     //This Icons And Titles Are holded in an Array as you can see
 
@@ -33,13 +35,22 @@ public class NavigationDrawerActivity extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
     DrawerLayout               Drawer;                                  // Declaring DrawerLayout
 
+    Button                button;
     ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation_drawer);
+        button = (Button) findViewById(R.id.wegweiserButton);
+        button.setOnClickListener(this);
 
     /* Assinging the toolbar object ot the view
     and setting the the Action bar to our toolbar

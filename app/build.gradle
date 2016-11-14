@@ -33,6 +33,6 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:9.8.0'
     compile 'com.github.mancj:MaterialSearchBar:0.3.1'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
-    apply plugin: 'com.google.gms.google-services'
 
 }
+apply plugin: 'com.google.gms.google-services'

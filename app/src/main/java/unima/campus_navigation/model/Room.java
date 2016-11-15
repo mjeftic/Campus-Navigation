@@ -1,10 +1,12 @@
 package unima.campus_navigation.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Marko on 12.10.16.
  */
 
-public class Room {
+public class Room implements Serializable{
     private double longitude;
     private double latitude;
     private String name;
@@ -49,4 +51,5 @@ public class Room {
     public void setFloor(int floor) {
         this.floor = floor;
     }
+
 }

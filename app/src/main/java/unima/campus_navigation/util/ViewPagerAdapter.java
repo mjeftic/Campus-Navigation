@@ -7,8 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import unima.campus_navigation.R;
 
@@ -17,16 +18,23 @@ import unima.campus_navigation.R;
  */
 
 public class ViewPagerAdapter extends PagerAdapter{
-    private ArrayList<Integer> IMAGES;
+    private List<Integer> IMAGES;
     private LayoutInflater inflater;
     private Context context;
 
+    private List<String> TEXT;
 
-    public ViewPagerAdapter(Context context,ArrayList<Integer> IMAGES) {
+
+
+    public ViewPagerAdapter(Context context,List<Integer> IMAGES, List<String> TEXT) {
         this.context = context;
         this.IMAGES=IMAGES;
         inflater = LayoutInflater.from(context);
+        this.TEXT=TEXT;
     }
+
+
+
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
@@ -50,7 +58,8 @@ public class ViewPagerAdapter extends PagerAdapter{
         imageView.setImageResource(IMAGES.get(position));
 
         view.addView(imageLayout, 0);
-
+        final TextView textView = (TextView)  imageLayout.findViewById(R.id.textView2);
+        textView.setText(TEXT.get(position));
         return imageLayout;
     }
 

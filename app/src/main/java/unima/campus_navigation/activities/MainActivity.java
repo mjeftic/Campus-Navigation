@@ -2,6 +2,7 @@ package unima.campus_navigation.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     ProvideMockDataServiceImpl dataProvider = new ProvideMockDataServiceImpl();
 
 
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,9 +91,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Room room = dataProvider.getRoomByName(query);
                 result = query;
                 floatingActionButton.setVisibility(View.VISIBLE);
                 zoom(query);
+                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+                editor.putString("room", room.getName().toString());
+                editor.commit();
                 return false;
             }
 
@@ -129,7 +136,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         //Snackbar.make(coordinatorLayout, "Location Item Selected", Snackbar.LENGTH_LONG).show();
                         break;
                     case R.id.favorite_item:
-                        startActivity(new Intent(MainActivity.this, IndoorNavigationActivity.class));
+                        //ProvideMockDataServiceImpl data = new ProvideMockDataServiceImpl();
+                        Intent intent = new Intent(MainActivity.this, IndoorNavigationActivity.class);
+                        //intent.putExtra("room",data.getSelectedRoom());
+                        startActivity(intent);
+
+                        //startActivity(new Intent(MainActivity.this, IndoorNavigationActivity.class));
                         //Snackbar.make(coordinatorLayout, "Favorite Item Selected", Snackbar.LENGTH_LONG).show();
                         break;
                 }

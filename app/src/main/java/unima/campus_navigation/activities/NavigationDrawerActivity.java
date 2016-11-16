@@ -1,5 +1,6 @@
 package unima.campus_navigation.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,35 +11,45 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 
 import unima.campus_navigation.R;
 
-public class NavigationDrawerActivity extends AppCompatActivity {
+public class NavigationDrawerActivity extends AppCompatActivity implements View.OnClickListener {
     //First We Declare Titles And Icons For Our Navigation Drawer List View
     //This Icons And Titles Are holded in an Array as you can see
 
-    String TITLES[] = {"Home", "News", "Events", "Portal2Lectures", "Library", "Mensa", "CampusMap", "Public Transport", "Student Organization", "University Contacts"};
-    int ICONS[] = {R.drawable.home, R.drawable.speakerphone, R.drawable.calendar, R.drawable.clock, R.drawable.bookmarks, R.drawable.coffee, R.drawable.map, R.drawable.model, R.drawable.people, R.drawable.personadd};
+    String TITLES[] = {"Home", "News", "Wegweiser", "Events", "Portal2Lectures", "Library", "Mensa", "CampusMap", "Public Transport", "Student Organization", "University Contacts"};
+    int    ICONS[]  = {R.drawable.home, R.drawable.WegWeiserLogo ,R.drawable.speakerphone, R.drawable.calendar, R.drawable.clock, R.drawable.bookmarks, R.drawable.coffee, R.drawable.map, R.drawable.model, R.drawable.people, R.drawable.personadd};
 
     //Similarly we Create a String Resource for the name and email in the header view
     //And we also create a int resource for profile picture in the header view
 
-    String NAME = "";
-    String EMAIL = "";
-    int PROFILE = R.drawable.castle;
+    String NAME    = "";
+    String EMAIL   = "";
+    int    PROFILE = R.drawable.castle;
 
-    RecyclerView mRecyclerView;                           // Declaring RecyclerView
-    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
+    RecyclerView               mRecyclerView;                           // Declaring RecyclerView
+    RecyclerView.Adapter       mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-    DrawerLayout Drawer;                                  // Declaring DrawerLayout
+    DrawerLayout               Drawer;                                  // Declaring DrawerLayout
 
+    Button                button;
     ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle
+
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(NavigationDrawerActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_navigation_drawer);
+        button = (Button) findViewById(R.id.wegweiserButton);
+        button.setOnClickListener(this);
 
     /* Assinging the toolbar object ot the view
     and setting the the Action bar to our toolbar
@@ -47,12 +58,12 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
 
         mRecyclerView.setHasFixedSize(true);                            // Letting the system know that the list objects are of fixed size
 
-        mAdapter = new MyAdapter(TITLES, ICONS, NAME, EMAIL, PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+        mAdapter = new MyAdapter(TITLES, ICONS, NAME, EMAIL,
+                                 PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
         // And passing the titles,icons,header view name, header view email,
         // and header view profile picture
 
@@ -83,7 +94,6 @@ public class NavigationDrawerActivity extends AppCompatActivity {
         }; // Drawer Toggle Object Made
         Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
-
     }
 
 

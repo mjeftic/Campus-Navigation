@@ -39,10 +39,11 @@ import com.roughike.bottombar.OnMenuTabSelectedListener;
 import java.util.ArrayList;
 
 import unima.campus_navigation.R;
+import unima.campus_navigation.model.IndoorNavigation;
 import unima.campus_navigation.model.Room;
 import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, MaterialSearchBar.OnSearchActionListener,AdapterView.OnItemSelectedListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, AdapterView.OnItemSelectedListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
 
     private CoordinatorLayout    coordinatorLayout;
     private FloatingActionButton floatingActionButton;
@@ -53,16 +54,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private BottomBar            bottomBar;
     private String                     result       = "";
     private ProvideMockDataServiceImpl dataProvider = new ProvideMockDataServiceImpl();
-    private Spinner  spinner;
-    private CardView cardView;
-    private MenuItem menuItem;
-    private Context  ctx;
+    private Spinner           spinner;
+    private CardView          cardView;
+    private MenuItem          menuItem;
+    private Context           ctx;
     private SharedPreferences sharedPreferences;
-    private boolean isSpinnerTouched;
+    private boolean           isSpinnerTouched;
 
 
     public static final String INDOORNAVIGATION_KEY = "INDOORNAVIGATION_KEY";
-    public static final String ROOM_KEY = "ROOM_KEY";
+    public static final String ROOM_KEY             = "ROOM_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,13 +86,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         spinner.setAdapter(spinnerAdapter);
         spinner.setOnItemSelectedListener(this);
-        spinner.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                isSpinnerTouched = true;
-                return false;
-            }
-        });
+        spinner.setOnTouchListener(this);
 
         floatingActionButton.setOnClickListener(this);
 
@@ -136,8 +131,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        isSpinnerTouched = true;
+        return false;
+    }
+
+    @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if(isSpinnerTouched){
+        if (isSpinnerTouched) {
             String selectedIndoorNavigation = parent.getItemAtPosition(position).toString();
             //Send intent
             sharedPreferences = ctx.getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
@@ -301,15 +302,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void zoom(String query) {
         map.clear();
         String roomName = dataProvider.getRoomByName(query).getName();
-        double latitudeRoom = dataProvider.getRoomByName(query).getLatitude();
-        double longitudeRoom = dataProvider.getRoomByName(query).getLongitude();
-        map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_home_black_48dp)).position(
-                new LatLng(longitudeRoom, latitudeRoom)).title(roomName)).showInfoWindow();
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeRoom, latitudeRoom), 15));
-        // Zoom in, animating the camera.
-        map.animateCamera(CameraUpdateFactory.zoomIn());
-        // Zoom out to zoom level 10, animating with a duration of 2 seconds.
-        map.animateCamera(CameraUpdateFactory.zoomTo(16), 2000, null);
+        if (dataProvider.getIndoornavigationByRoom(roomName) == null) {
+            //No Indoornavigation ===> Show Room only
+            double latitudeRoom = dataProvider.getRoomByName(query).getLatitude();
+            double longitudeRoom = dataProvider.getRoomByName(query).getLongitude();
+            map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_room_black_24dp)).position(
+                    new LatLng(longitudeRoom, latitudeRoom)).title(
+                    "Room " + roomName + " at" + dataProvider.getRoomByName(roomName).getFloor() + " Floor")).showInfoWindow();
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeRoom, latitudeRoom), 17));
+            // Zoom in, animating the camera.
+            map.animateCamera(CameraUpdateFactory.zoomIn());
+            // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+            map.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        } else {
+            //Has Indoornavigation ==> Show entrance and room!
+            double latitudeRoom = dataProvider.getRoomByName(query).getLatitude();
+            double longitudeRoom = dataProvider.getRoomByName(query).getLongitude();
+
+            IndoorNavigation indorNav = dataProvider.getIndoornavigationByRoom(roomName);
+            double latitudeEntrance = indorNav.getEntrance().getLatitude();
+            double longitudeEntrance = indorNav.getEntrance().getLongitude();
+            String entranceName = indorNav.getEntrance().getName();
+
+            map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_room_black_24dp)).position(
+                    new LatLng(longitudeRoom, latitudeRoom)).title(
+                    "Room " + roomName + " at" + dataProvider.getRoomByName(roomName).getFloor() + " Floor")).showInfoWindow();
+
+            map.addMarker(new MarkerOptions().icon(
+                    BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_drop_down_circle_black_24dp)).position(
+                    new LatLng(longitudeEntrance, latitudeEntrance)).title("Entrance " + entranceName)).showInfoWindow();
+
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeEntrance, latitudeEntrance), 17));
+            // Zoom in, animating the camera.
+            map.animateCamera(CameraUpdateFactory.zoomIn());
+            // Zoom out to zoom level 10, animating with a duration of 2 seconds.
+            map.animateCamera(CameraUpdateFactory.zoomTo(18), 2000, null);
+        }
 
 
     }

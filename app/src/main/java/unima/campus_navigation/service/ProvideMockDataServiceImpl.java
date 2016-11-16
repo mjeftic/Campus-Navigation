@@ -44,6 +44,15 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         return result;
     }
 
+    public List<String> getIndoorStrings() {
+        List<IndoorNavigation> indoorNavigations = generateIndoorNavigationData();
+        List<String> indoorNames = new ArrayList<>();
+        for (IndoorNavigation nav : indoorNavigations) {
+            indoorNames.add(nav.getTargetRoom().getName());
+        }
+        return indoorNames;
+    }
+
 
     public List<Room> generateMockData() {
         List<Room> rooms = new ArrayList<>();
@@ -84,7 +93,8 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
     public List<IndoorNavigation> generateIndoorNavigationData() {
         List<IndoorNavigation> list = new ArrayList<>();
 
-        Entrance haupteingang = new Entrance("Haupteingang", 49.482534, 8.464205);
+        Entrance haupteingang = new Entrance("Haupteingang", 49.483338,	 8.464638);
+        Entrance unibib = new Entrance("Learning Center BWL",49.482683, 8.463662);
 
         Room room_o145 = new Room("O145", 49.483534, 8.464235, 3);
         Room room_röchling = new Room("Röchling Hörsaal", 49.483534, 8.464235, 1);

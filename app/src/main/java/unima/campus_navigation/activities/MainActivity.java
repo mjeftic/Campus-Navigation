@@ -1,21 +1,27 @@
 package unima.campus_navigation.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,121 +42,73 @@ import unima.campus_navigation.R;
 import unima.campus_navigation.model.Room;
 import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, MaterialSearchBar.OnSearchActionListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, MaterialSearchBar.OnSearchActionListener,AdapterView.OnItemSelectedListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
 
-    CoordinatorLayout    coordinatorLayout;
-    FloatingActionButton floatingActionButton;
-    MaterialSearchView   searchView;
-    Toolbar              toolbar;
-    GoogleMap            map;
-    SupportMapFragment   mapFragment;
-    String                     result       = "";
-    ProvideMockDataServiceImpl dataProvider = new ProvideMockDataServiceImpl();
+    private CoordinatorLayout    coordinatorLayout;
+    private FloatingActionButton floatingActionButton;
+    private MaterialSearchView   searchView;
+    private Toolbar              toolbar;
+    private GoogleMap            map;
+    private SupportMapFragment   mapFragment;
+    private BottomBar            bottomBar;
+    private String                     result       = "";
+    private ProvideMockDataServiceImpl dataProvider = new ProvideMockDataServiceImpl();
+    private Spinner  spinner;
+    private CardView cardView;
+    private MenuItem menuItem;
+    private Context  ctx;
+    private SharedPreferences sharedPreferences;
+    private boolean isSpinnerTouched;
 
 
-    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    public static final String INDOORNAVIGATION_KEY = "INDOORNAVIGATION_KEY";
+    public static final String ROOM_KEY = "ROOM_KEY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        floatingActionButton = (FloatingActionButton) findViewById(R.id.fab);
+        ctx = getApplicationContext();
+        floatingActionButton = (FloatingActionButton) findViewById(R.id.indoor_fab);
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        spinner = (Spinner) findViewById(R.id.indoorspinner);
+        cardView = (CardView) findViewById(R.id.indoor_card_view);
+        menuItem = (MenuItem) findViewById(R.id.action_search);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Search");
 
 
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item,
+                                                                 dataProvider.getIndoorStrings());
+
+        spinner.setAdapter(spinnerAdapter);
+        spinner.setOnItemSelectedListener(this);
+        spinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                Room room = null;
-                if (result != null) {
-                    room = dataProvider.getRoomByName(result);
-                }
-                if (room != null) {
-                    startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
-                }
-            }
-        });
-
-        searchView.setVoiceSearch(true);
-
-        searchView.setSubmitOnClick(true);
-        searchView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String query = (String) parent.getItemAtPosition(position);
-                result = query;
-                floatingActionButton.setVisibility(View.VISIBLE);
-                loadData(query);
-                searchView.closeSearch();
-            }
-        });
-
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Room room = dataProvider.getRoomByName(query);
-                result = query;
-                floatingActionButton.setVisibility(View.VISIBLE);
-                zoom(query);
-                SharedPreferences.Editor editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
-                editor.putString("room", room.getName().toString());
-                editor.commit();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //Do some magic
+            public boolean onTouch(View v, MotionEvent event) {
+                isSpinnerTouched = true;
                 return false;
             }
         });
 
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-                searchView.setVisibility(View.VISIBLE);
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                //Do some magic
-                searchView.setVisibility(View.GONE);
-            }
-        });
-
-        String[] array = new String[dataProvider.getRoomStrings().size()];
-
-        searchView.setSuggestions(dataProvider.getRoomStrings().toArray(array));
-
+        floatingActionButton.setOnClickListener(this);
 
         BottomBar bottomBar = BottomBar.attach(this, savedInstanceState);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.activity_main);
-        bottomBar.setItemsFromMenu(R.menu.menu, new OnMenuTabSelectedListener() {
-            @Override
-            public void onMenuItemSelected(int itemId) {
-                switch (itemId) {
-                    case R.id.location_item:
-                        //Snackbar.make(coordinatorLayout, "Location Item Selected", Snackbar.LENGTH_LONG).show();
-                        break;
-                    case R.id.favorite_item:
-                        //ProvideMockDataServiceImpl data = new ProvideMockDataServiceImpl();
-                        Intent intent = new Intent(MainActivity.this, IndoorNavigationActivity.class);
-                        //intent.putExtra("room",data.getSelectedRoom());
-                        startActivity(intent);
 
-                        //startActivity(new Intent(MainActivity.this, IndoorNavigationActivity.class));
-                        //Snackbar.make(coordinatorLayout, "Favorite Item Selected", Snackbar.LENGTH_LONG).show();
-                        break;
-                }
-            }
-        });
+        searchView.setVoiceSearch(true);
+        searchView.setSubmitOnClick(true);
+        searchView.setOnItemClickListener(this);
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnSearchViewListener(this);
+        String[] array = new String[dataProvider.getRoomStrings().size()];
+        searchView.setSuggestions(dataProvider.getRoomStrings().toArray(array));
 
-        // Set the color for the active tab. Ignored on mobile when there are more than three tabs.
+
+        bottomBar.setItemsFromMenu(R.menu.menu, this);
         bottomBar.setActiveTabColor("#FF4081");
-
 
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -160,10 +118,40 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
 
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
+        menuItem = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(menuItem);
 
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Room room = null;
+        if (result != null) {
+            room = dataProvider.getRoomByName(result);
+        }
+        if (room != null) {
+            startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(isSpinnerTouched){
+            String selectedIndoorNavigation = parent.getItemAtPosition(position).toString();
+            //Send intent
+            sharedPreferences = ctx.getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(ROOM_KEY, selectedIndoorNavigation);
+            editor.commit();
+            Intent intent = new Intent(MainActivity.this, IndoorNavigationDetailActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     @Override
@@ -173,6 +161,47 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String query = (String) parent.getItemAtPosition(position);
+        result = query;
+        floatingActionButton.setVisibility(View.VISIBLE);
+        loadData(query);
+        searchView.closeSearch();
+    }
+
+    @Override
+    public void onMenuItemSelected(@IdRes int menuItemId) {
+        switch (menuItemId) {
+            case R.id.location_item:
+                cardView.setVisibility(View.GONE);
+                menuItem.setVisible(true);
+                getSupportActionBar().setTitle("Search");
+                break;
+            case R.id.favorite_item:
+                cardView.setVisibility(View.VISIBLE);
+                searchView.closeSearch();
+                menuItem.setVisible(false);
+                getSupportActionBar().setTitle("Indoornavigation");
+                break;
+        }
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Room room = dataProvider.getRoomByName(query);
+        result = query;
+        floatingActionButton.setVisibility(View.VISIBLE);
+        zoom(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        //Do some magic
+        return false;
     }
 
     @Override
@@ -190,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     @Override
     public void onSearchStateChanged(boolean enabled) {
@@ -219,6 +247,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }*/
         map = googleMap;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(49.482534, 8.465205), 15));
+    }
+
+    @Override
+    public void onSearchViewShown() {
+        searchView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onSearchViewClosed() {
+        //Do some magic
+        searchView.setVisibility(View.GONE);
     }
 
     public void startNavigation(final double longitude, final double latitude, final String locationName) {

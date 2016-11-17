@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -42,8 +43,9 @@ import unima.campus_navigation.R;
 import unima.campus_navigation.model.IndoorNavigation;
 import unima.campus_navigation.model.Room;
 import unima.campus_navigation.service.ProvideMockDataServiceImpl;
+import unima.campus_navigation.util.CustomSpinner;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, AdapterView.OnItemSelectedListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
 
     private CoordinatorLayout    coordinatorLayout;
     private FloatingActionButton floatingActionButton;
@@ -85,7 +87,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                                  dataProvider.getIndoorStrings());
 
         spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(this);
+        spinner.setOnItemSelectedListener(new CustomSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (isSpinnerTouched) {
+                    Log.d("Spinner","clicked");
+                    String selectedIndoorNavigation = parent.getItemAtPosition(position).toString();
+                    //Send intent
+                    sharedPreferences = ctx.getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(ROOM_KEY, selectedIndoorNavigation);
+                    editor.commit();
+                    Intent intent = new Intent(MainActivity.this, IndoorNavigationDetailActivity.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         spinner.setOnTouchListener(this);
 
         floatingActionButton.setOnClickListener(this);
@@ -136,24 +158,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return false;
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (isSpinnerTouched) {
-            String selectedIndoorNavigation = parent.getItemAtPosition(position).toString();
-            //Send intent
-            sharedPreferences = ctx.getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString(ROOM_KEY, selectedIndoorNavigation);
-            editor.commit();
-            Intent intent = new Intent(MainActivity.this, IndoorNavigationDetailActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     @Override
     public void onBackPressed() {

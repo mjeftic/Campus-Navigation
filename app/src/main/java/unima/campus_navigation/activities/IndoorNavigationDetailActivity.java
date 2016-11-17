@@ -10,9 +10,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eftimoff.viewpagertransformers.StackTransformer;
+
 import unima.campus_navigation.R;
 import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 import unima.campus_navigation.util.ViewPagerAdapter;
+
+import static unima.campus_navigation.R.id.pager;
 
 /**
  * Created by Aizpea on 21/10/2016.
@@ -50,11 +54,13 @@ public class IndoorNavigationDetailActivity extends AppCompatActivity {
         if (selectedRoom != null) {
             getSupportActionBar().setTitle(selectedRoom);
             ProvideMockDataServiceImpl data = new ProvideMockDataServiceImpl();
-            mPager = (ViewPager) findViewById(R.id.pager);
+            mPager = (ViewPager) findViewById(pager);
             bubbleField = (TextView) findViewById(R.id.textView2);
             mPager.setAdapter(
                     new ViewPagerAdapter(IndoorNavigationDetailActivity.this, data.getIndoornavigationByRoom(selectedRoom).getImagePaths(),
                                          data.getIndoornavigationByRoom(selectedRoom).getTextBubbles()));
+            mPager.setPageTransformer(true, new StackTransformer());
+
         } else {
             finish();
             Toast.makeText(getApplicationContext(),"Room was not found", Toast.LENGTH_SHORT).show();

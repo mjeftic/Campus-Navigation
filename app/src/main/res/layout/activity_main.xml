@@ -40,14 +40,14 @@
                     android:padding="16dp"
                     android:layout_height="wrap_content"/>
 
-                <Spinner
+                <unima.campus_navigation.util.CustomSpinner
                     android:id="@+id/indoorspinner"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:padding="8dp"
                     >
 
-                </Spinner>
+                </unima.campus_navigation.util.CustomSpinner>
             </LinearLayout>
 
         </android.support.v7.widget.CardView>

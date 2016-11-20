@@ -3,6 +3,8 @@
     package="unima.campus_navigation">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -13,6 +15,9 @@
         <activity android:name=".activities.MainActivity">
         </activity>
         <activity android:name=".activities.IndoorNavigationDetailActivity" />
+
+        <service android:name=".service.GeoFenceTransitionIntentService"
+                 android:exported="true" />
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
@@ -34,6 +39,7 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+
     </application>
 
 </manifest>

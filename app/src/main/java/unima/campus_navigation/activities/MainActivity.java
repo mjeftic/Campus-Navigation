@@ -1,15 +1,21 @@
 package unima.campus_navigation.activities;
 
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -25,6 +31,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,10 +55,15 @@ import java.util.ArrayList;
 import unima.campus_navigation.R;
 import unima.campus_navigation.model.IndoorNavigation;
 import unima.campus_navigation.model.Room;
+import unima.campus_navigation.service.GeoFenceTransitionIntentService;
 import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 import unima.campus_navigation.util.CustomSpinner;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback, ResultCallback<Status>, OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
+
+
+    protected ArrayList<Geofence> mGeofenceList;
+    protected GoogleApiClient     mGoogleApiClient;
 
     private CoordinatorLayout    coordinatorLayout;
     private FloatingActionButton floatingActionButton;
@@ -67,10 +85,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public static final String INDOORNAVIGATION_KEY = "INDOORNAVIGATION_KEY";
     public static final String ROOM_KEY             = "ROOM_KEY";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION },
+                                              1);
+        }
+
+        // Empty list for storing geofences.
+        mGeofenceList = new ArrayList<Geofence>();
+
+
+        // Kick off the request to build GoogleApiClient.
+        buildGoogleApiClient();
+
+
         ctx = getApplicationContext();
         floatingActionButton = (FloatingActionButton) findViewById(R.id.indoor_fab);
         searchView = (MaterialSearchView) findViewById(R.id.search_view);
@@ -91,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (isSpinnerTouched) {
-                    Log.d("Spinner","clicked");
+                    Log.d("Spinner", "clicked");
                     String selectedIndoorNavigation = parent.getItemAtPosition(position).toString();
                     //Send intent
                     sharedPreferences = ctx.getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
@@ -142,6 +176,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if (!mGoogleApiClient.isConnecting() || !mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.connect();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnecting() || mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
+
+    @Override
     public void onClick(View v) {
         Room room = null;
         if (result != null) {
@@ -149,6 +200,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         if (room != null) {
             startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
+        }
+    }
+
+    @Override
+    public void onResult(@NonNull Status status) {
+        if (status.isSuccess()) {
+            Toast.makeText(this, "Geofences Added", Toast.LENGTH_SHORT).show();
+        } else {
+            // Get the status code for the error and log it using a user-friendly message.
+            Toast.makeText(this, status.getStatusCode(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -265,6 +326,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchView.setVisibility(View.GONE);
     }
 
+
+    public void populateGeofenceList(double longitude, double latitude, float radius, int durationInMiliseconds) {
+        mGeofenceList.add(new Geofence.Builder().setRequestId("Key").setCircularRegion(latitude, longitude  , radius).setExpirationDuration(
+                durationInMiliseconds).setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT).build());
+
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this).addOnConnectionFailedListener(this).addApi(
+                LocationServices.API).build();
+    }
+
+
     public void startNavigation(final double longitude, final double latitude, final String locationName) {
 
 
@@ -277,6 +351,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // positive button logic
+                // Get the geofences used. Geofence data is hard coded in this sample.
+                populateGeofenceList(longitude,latitude,500,12 * 60 * 60 * 1000);
+                addGeofencesButtonHandler();
                 String urlAddress = "http://maps.google.com/maps?q=" + longitude + "," + latitude + "(" + locationName + ")&iwloc=A&hl=es";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress));
 
@@ -344,6 +421,65 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        Log.d("Google Api:","connected");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // All good!
+                } else {
+                    Toast.makeText(this, "Need your location!", Toast.LENGTH_SHORT).show();
+                }
+
+                break;
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+    public void addGeofencesButtonHandler() {
+        Log.d("MainActivity", "addGeofencesButtonHandler");
+        if (!mGoogleApiClient.isConnected()) {
+            Toast.makeText(this, "Google API Client not connected!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try {
+            LocationServices.GeofencingApi.addGeofences(mGoogleApiClient, getGeofencingRequest(),
+                                                        getGeofencePendingIntent()).setResultCallback(
+                    this); // Result processed in onResult().
+        } catch (SecurityException securityException) {
+            // Catch exception generated if the app does not use ACCESS_FINE_LOCATION permission.
+        }
+    }
+
+    private GeofencingRequest getGeofencingRequest() {
+        Log.d("MainActivity", "getGeofencingRequest");
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
+        builder.addGeofences(mGeofenceList);
+        return builder.build();
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        Log.d("MainActivity", "getGeofencePendingIntent");
+        Intent intent = new Intent(this, GeoFenceTransitionIntentService.class);
+        // We use FLAG_UPDATE_CURRENT so that we get the same pending intent back when calling addgeoFences()
+        return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 }

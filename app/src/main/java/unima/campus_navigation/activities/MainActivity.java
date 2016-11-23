@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Context           ctx;
     private SharedPreferences sharedPreferences;
     private boolean           isSpinnerTouched;
+    private Room room;
 
 
     public static final String INDOORNAVIGATION_KEY = "INDOORNAVIGATION_KEY";
@@ -194,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onClick(View v) {
+        //FIXME get Entrance by room
         Room room = null;
         if (result != null) {
             room = dataProvider.getRoomByName(result);
@@ -257,7 +259,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public boolean onQueryTextSubmit(String query) {
-        Room room = dataProvider.getRoomByName(query);
+        room = dataProvider.getRoomByName(query);
         result = query;
         floatingActionButton.setVisibility(View.VISIBLE);
         zoom(query);
@@ -328,6 +330,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
     public void populateGeofenceList(double longitude, double latitude, float radius, int durationInMiliseconds) {
+        //latitude = 49.490923;
+        //longitude = 8.475525;
         mGeofenceList.add(new Geofence.Builder().setRequestId("Key").setCircularRegion(latitude, longitude  , radius).setExpirationDuration(
                 durationInMiliseconds).setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT).build());
 
@@ -352,7 +356,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
             public void onClick(DialogInterface dialog, int which) {
                 // positive button logic
                 // Get the geofences used. Geofence data is hard coded in this sample.
-                populateGeofenceList(longitude,latitude,500,12 * 60 * 60 * 1000);
+                populateGeofenceList(longitude,latitude,20,12 * 60 * 60 * 1000);
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                //IndoorNavigation indoor = dataProvider.getIndoornavigationByRoom(room.getName());
+                editor.putString(ROOM_KEY, room.getName());
+                editor.commit();
                 addGeofencesButtonHandler();
                 String urlAddress = "http://maps.google.com/maps?q=" + longitude + "," + latitude + "(" + locationName + ")&iwloc=A&hl=es";
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlAddress));
@@ -411,7 +420,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
             map.addMarker(new MarkerOptions().icon(
                     BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_drop_down_circle_black_24dp)).position(
-                    new LatLng(longitudeEntrance, latitudeEntrance)).title("Entrance " + entranceName)).showInfoWindow();
+                    new LatLng(longitudeEntrance, latitudeEntrance)).title("Entrance " + entranceName));
 
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeEntrance, latitudeEntrance), 17));
             // Zoom in, animating the camera.

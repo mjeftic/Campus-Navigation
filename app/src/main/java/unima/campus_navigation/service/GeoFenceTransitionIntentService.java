@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -18,7 +19,12 @@ import com.google.android.gms.location.GeofencingEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import unima.campus_navigation.R;
+import unima.campus_navigation.activities.IndoorNavigationDetailActivity;
 import unima.campus_navigation.activities.MainActivity;
+
+import static unima.campus_navigation.activities.MainActivity.INDOORNAVIGATION_KEY;
+import static unima.campus_navigation.activities.MainActivity.ROOM_KEY;
 
 /**
  * Created by Marko on 20.11.16.
@@ -26,6 +32,7 @@ import unima.campus_navigation.activities.MainActivity;
 
 public class GeoFenceTransitionIntentService extends IntentService {
     protected static final String TAG = "GeofenceTransitionsIS";
+    String roomName;
 
     public GeoFenceTransitionIntentService() {
         super(TAG);  // use TAG to name the IntentService worker thread
@@ -34,6 +41,10 @@ public class GeoFenceTransitionIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
+        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
+        roomName = sharedPref.getString(ROOM_KEY, null);
+
+
         if (event.hasError()) {
             Log.e(TAG, "GeofencingEvent Error: " + event.getErrorCode());
             return;
@@ -56,7 +67,13 @@ public class GeoFenceTransitionIntentService extends IntentService {
     private void sendNotification(String notificationDetails) {
         // Create an explicit content Intent that starts MainActivity.
 
-        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+        Intent notificationIntent = new Intent(getApplicationContext(), IndoorNavigationDetailActivity.class);
+
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(ROOM_KEY, roomName);
+        editor.commit();
+
 
         // Get a PendingIntent containing the entire back stack.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
@@ -69,8 +86,9 @@ public class GeoFenceTransitionIntentService extends IntentService {
 
         // Define the notification settings.
         builder.setColor(Color.RED)
-                .setContentTitle(notificationDetails)
-                .setContentText("Click notification to return to App")
+                .setContentTitle("Start Indoornavigation")
+                .setSmallIcon(R.drawable.ic_home_black_48dp)
+                .setContentText("Welcome at the Entrance, tap to start the indoor navigation")
                 .setContentIntent(notificationPendingIntent)
                 .setAutoCancel(true);
 

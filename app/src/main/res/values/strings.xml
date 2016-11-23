@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Campus-Navigation</string>
+    <string name="app_name">Wegweiser</string>
     <string name="openDrawer">Open Drawer </string>
     <string name="closeDrawer">Close Drawer </string>
     <string name="action_settings">Settings</string>

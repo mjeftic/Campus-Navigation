@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements CustomSpinner.OnI
             double longitudeRoom = dataProvider.getRoomByName(query).getLongitude();
             map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_room_black_24dp)).position(
                     new LatLng(longitudeRoom, latitudeRoom)).title(
-                    "Room " + roomName + " at" + dataProvider.getRoomByName(roomName).getFloor() + " Floor")).showInfoWindow();
+                    "Room " + roomName + " at " + dataProvider.getRoomByName(roomName).getFloor() + ". Floor")).showInfoWindow();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeRoom, latitudeRoom), 17));
             // Zoom in, animating the camera.
             map.animateCamera(CameraUpdateFactory.zoomIn());

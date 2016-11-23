@@ -60,7 +60,7 @@ import unima.campus_navigation.service.GeoFenceTransitionIntentService;
 import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 import unima.campus_navigation.util.CustomSpinner;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback, ResultCallback<Status>, OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements CustomSpinner.OnItemSelectedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback, ResultCallback<Status>, OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
 
 
     protected ArrayList<Geofence> mGeofenceList;
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Permissioncheck
         if (ContextCompat.checkSelfPermission(this,
                                               android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
@@ -122,27 +123,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                                                                  dataProvider.getIndoorStrings());
 
         spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(new CustomSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (isSpinnerTouched) {
-                    Log.d("Spinner", "clicked");
-                    String selectedIndoorNavigation = parent.getItemAtPosition(position).toString();
-                    //Send intent
-                    sharedPreferences = ctx.getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(ROOM_KEY, selectedIndoorNavigation);
-                    editor.commit();
-                    Intent intent = new Intent(MainActivity.this, IndoorNavigationDetailActivity.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
+        spinner.setOnItemSelectedListener(this);
         spinner.setOnTouchListener(this);
 
         floatingActionButton.setOnClickListener(this);
@@ -174,6 +155,26 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         searchView.setMenuItem(menuItem);
 
         return true;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (isSpinnerTouched) {
+            Log.d("Spinner", "clicked");
+            String selectedIndoorNavigation = parent.getItemAtPosition(position).toString();
+            //Send intent
+            sharedPreferences = ctx.getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString(ROOM_KEY, selectedIndoorNavigation);
+            editor.commit();
+            Intent intent = new Intent(MainActivity.this, IndoorNavigationDetailActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     @Override

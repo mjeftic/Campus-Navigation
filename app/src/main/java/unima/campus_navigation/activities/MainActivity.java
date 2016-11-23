@@ -53,13 +53,14 @@ import com.roughike.bottombar.OnMenuTabSelectedListener;
 import java.util.ArrayList;
 
 import unima.campus_navigation.R;
+import unima.campus_navigation.model.Entrance;
 import unima.campus_navigation.model.IndoorNavigation;
 import unima.campus_navigation.model.Room;
 import unima.campus_navigation.service.GeoFenceTransitionIntentService;
 import unima.campus_navigation.service.ProvideMockDataServiceImpl;
 import unima.campus_navigation.util.CustomSpinner;
 
-public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,ActivityCompat.OnRequestPermissionsResultCallback, ResultCallback<Status>, OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, ActivityCompat.OnRequestPermissionsResultCallback, ResultCallback<Status>, OnMapReadyCallback, View.OnTouchListener, MaterialSearchBar.OnSearchActionListener, MaterialSearchView.SearchViewListener, MaterialSearchView.OnQueryTextListener, AdapterView.OnItemClickListener, OnMenuTabSelectedListener, View.OnClickListener {
 
 
     protected ArrayList<Geofence> mGeofenceList;
@@ -80,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     private Context           ctx;
     private SharedPreferences sharedPreferences;
     private boolean           isSpinnerTouched;
-    private Room room;
+    private Room              room;
 
 
     public static final String INDOORNAVIGATION_KEY = "INDOORNAVIGATION_KEY";
@@ -92,10 +93,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] { android.Manifest.permission.ACCESS_COARSE_LOCATION },
-                                              1);
+        if (ContextCompat.checkSelfPermission(this,
+                                              android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
         }
 
         // Empty list for storing geofences.
@@ -197,11 +197,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onClick(View v) {
         //FIXME get Entrance by room
         Room room = null;
+        Entrance entrance = null;
         if (result != null) {
             room = dataProvider.getRoomByName(result);
+            entrance = dataProvider.getEntranceByName(result);
         }
         if (room != null) {
-            startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
+            if (entrance != null) {
+                startNavigation(entrance.getLongitude(), entrance.getLatitude(), room.getName());
+            } else {
+                startNavigation(room.getLongitude(), room.getLatitude(), room.getName());
+            }
+
         }
     }
 
@@ -330,9 +337,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
 
     public void populateGeofenceList(double longitude, double latitude, float radius, int durationInMiliseconds) {
-        //latitude = 49.490923;
-        //longitude = 8.475525;
-        mGeofenceList.add(new Geofence.Builder().setRequestId("Key").setCircularRegion(latitude, longitude  , radius).setExpirationDuration(
+        //latitude = 49.48316975;
+        //longitude = 8.4636915;
+        //Room room_sap = new Room("SAP Apphaus", 49.48316975, 8.4636915, 2);
+
+        Log.d("Room longitude", String.valueOf(longitude));
+        Log.d("Room latitude", String.valueOf(latitude));
+
+        mGeofenceList.add(new Geofence.Builder().setRequestId("Key").setCircularRegion(latitude, longitude, radius).setExpirationDuration(
                 durationInMiliseconds).setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT).build());
 
     }
@@ -348,16 +360,18 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Navigation");
-        builder.setMessage("Do you want to be navigated to the room");
+        builder.setMessage("Do you want to be navigated to the room?");
 
         String positiveText = getString(android.R.string.ok);
         builder.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // positive button logic
-                // Get the geofences used. Geofence data is hard coded in this sample.
-                populateGeofenceList(longitude,latitude,20,12 * 60 * 60 * 1000);
-                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(INDOORNAVIGATION_KEY, Context.MODE_PRIVATE);
+
+
+                populateGeofenceList(longitude, latitude, 200, 12 * 60 * 60 * 1000);
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(INDOORNAVIGATION_KEY,
+                                                                                                   Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 //IndoorNavigation indoor = dataProvider.getIndoornavigationByRoom(room.getName());
                 editor.putString(ROOM_KEY, room.getName());
@@ -418,11 +432,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     new LatLng(longitudeRoom, latitudeRoom)).title(
                     "Room " + roomName + " at" + dataProvider.getRoomByName(roomName).getFloor() + " Floor")).showInfoWindow();
 
-            map.addMarker(new MarkerOptions().icon(
+            /*map.addMarker(new MarkerOptions().icon(
                     BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_drop_down_circle_black_24dp)).position(
-                    new LatLng(longitudeEntrance, latitudeEntrance)).title("Entrance " + entranceName));
+                    new LatLng(longitudeEntrance, latitudeEntrance)).title("Entrance " + entranceName));*/
 
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeEntrance, latitudeEntrance), 17));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeRoom, latitudeRoom), 17));
             // Zoom in, animating the camera.
             map.animateCamera(CameraUpdateFactory.zoomIn());
             // Zoom out to zoom level 10, animating with a duration of 2 seconds.
@@ -434,13 +448,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        Log.d("Google Api:","connected");
+        Log.d("Google Api:", "connected");
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {

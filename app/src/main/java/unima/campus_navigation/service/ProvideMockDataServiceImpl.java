@@ -18,12 +18,12 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
 
     @Override
     public List<Room> getRoomObjects() {
-        return generateMockData();
+        return generateMockRoomData();
     }
 
     @Override
     public List<String> getRoomStrings() {
-        List<Room> rooms = generateMockData();
+        List<Room> rooms = generateMockRoomData();
         List<String> roomNames = new ArrayList<>();
         for (Room room : rooms) {
             roomNames.add(room.getName());
@@ -54,29 +54,59 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
     }
 
 
-    public List<Room> generateMockData() {
+    public List<Room> generateMockRoomData() {
         List<Room> rooms = new ArrayList<>();
-        Room S108 = new Room("S108", 49.481534, 8.465205, 1);
-        Room S107 = new Room("S107", 49.482534, 8.466205, 1);
-        Room S106 = new Room("S106", 49.482534, 8.464205, 0);
-        Room S105 = new Room("S105", 49.482534, 8.463205, 0);
-        Room S104 = new Room("S104", 49.482534, 8.462205, 0);
-        Room S103 = new Room("S103", 49.484534, 8.465205, 1);
-        Room S102 = new Room("S102", 49.483534, 8.465205, 5);
-
-
         Room O145 = new Room("O145", 49.483143, 8.464862, 1);
         Room RöchlingHörsaal = new Room("Röchling Hörsaal", 49.483534, 8.465205, 2);
-        rooms.add(S102);
-        rooms.add(S103);
-        rooms.add(S104);
-        rooms.add(S105);
-        rooms.add(S106);
-        rooms.add(S107);
-        rooms.add(S108);
+        Room room_sap = new Room("SAP Apphaus", 49.406861, 8.675556, 2);
+        Room room_o142 = new Room("O142", 49.482683, 8.463662, 1);
+        Room room_o148 = new Room("O145", 49.483122, 8.464966, 1);
+        Room room_o151 = new Room("O151", 49.483067, 8.465080, 1);
+        Room room_o138 = new Room("O138", 49.482683, 8.463662, 1);
+        Room room_o135 = new Room("O135", 49.483295, 8.464502, 1);
+        Room room_o133 = new Room("O133", 49.483350, 8.464351, 1);
+        Room room_o131 = new Room("O131", 49.483391, 8.464242, 1);
+        Room room_o129 = new Room("O129", 49.483439, 8.464123, 1);
+        Room room_o128 = new Room("O128", 49.483487, 8.463959, 1);
+        Room room_o126 = new Room("O126", 49.483570, 8.463787, 1);
+
+
         rooms.add(O145);
+        rooms.add(room_o142);
+        rooms.add(room_o148);
+        rooms.add(room_o151);
+        rooms.add(room_o138);
+        rooms.add(room_o135);
+        rooms.add(room_o133);
+        rooms.add(room_o131);
+        rooms.add(room_o129);
+        rooms.add(room_o128);
+        rooms.add(room_o126);
+        rooms.add(room_sap);
         rooms.add(RöchlingHörsaal);
         return rooms;
+    }
+
+    public List<Entrance> generateMockEntranceData() {
+        List<Entrance> entrances = new ArrayList<>();
+        Entrance haupteingang = new Entrance("Haupteingang", 49.483325, 8.464715);
+        Entrance entrance_unibib = new Entrance("Learning Center BWL", 49.482683, 8.463662);
+        Entrance entrance_sap = new Entrance("SAP Apphaus", 49.406562, 8.676843);
+        entrances.add(haupteingang);
+        entrances.add(entrance_unibib);
+        entrances.add(entrance_sap);
+        return entrances;
+    }
+
+    public Entrance getEntranceByName(String name) {
+        List<Entrance> list = generateMockEntranceData();
+        Entrance result = null;
+        for (Entrance entrance : list) {
+            if (entrance.getName().equalsIgnoreCase(name)) {
+                result = entrance;
+            }
+        }
+        return result;
     }
 
     public IndoorNavigation getIndoornavigationByRoom(String room) {
@@ -90,15 +120,11 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         return result;
     }
 
+
     public List<IndoorNavigation> generateIndoorNavigationData() {
         List<IndoorNavigation> list = new ArrayList<>();
 
-        Entrance haupteingang = new Entrance("Haupteingang", 49.483325,	 8.464715);
-        Entrance unibib = new Entrance("Learning Center BWL",49.482683, 8.463662);
-
-        Room room_o145 = new Room("O145", 49.483534, 8.464235, 3);
-        Room room_röchling = new Room("Röchling Hörsaal", 49.483534, 8.464235, 1);
-
+        //Here you add list of images of an indoornavigation
         List<Integer> images_o145 = new ArrayList<>();
         images_o145.add(R.drawable.o145_pic0);
         images_o145.add(R.drawable.o145_pic1);
@@ -119,6 +145,15 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         images_röchling.add(R.drawable.h_pic4);
         images_röchling.add(R.drawable.h_pic5);
 
+        List<Integer> images_sap = new ArrayList<>();
+        images_sap.add(R.drawable.sap_0);
+        images_sap.add(R.drawable.sap_1);
+        images_sap.add(R.drawable.sap_2);
+        images_sap.add(R.drawable.sap_3);
+        images_sap.add(R.drawable.sap_4);
+        images_sap.add(R.drawable.sap_5);
+
+        //Here you add the bubbles of indoor navigation
         List<String> bubbles_o145 = new ArrayList<>();
         bubbles_o145.add("Entrance");
         bubbles_o145.add("Go upstairs to the 1st floor");
@@ -139,17 +174,33 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         bubbles_röchling.add("Go to the door");
         bubbles_röchling.add("You reached your room!");
 
+        List<String> bubbles_sap = new ArrayList<>();
+        bubbles_sap.add("Entrance");
+        bubbles_sap.add("Go up the stairs");
+        bubbles_sap.add("It's in the 2nd floor");
+        bubbles_sap.add("Open the door");
+        bubbles_sap.add("Go left");
+        bubbles_sap.add("Welcome to Sap Apphaus Room");
 
-        IndoorNavigation indoornavigation_o145 = new IndoorNavigation("O145", haupteingang, room_o145, images_o145, bubbles_o145);
-        IndoorNavigation indoorNavigation_röchling = new IndoorNavigation("Röchling Hörsaal",haupteingang,room_röchling, images_röchling, bubbles_röchling);
+
+        //Here you create the indoornavigations
+        //Carefull: Indoornavigation name and room name must be same
+        IndoorNavigation indoornavigation_o145 = new IndoorNavigation("O145", getEntranceByName("Haupteingang"), getRoomByName("O145"),
+                                                                      images_o145, bubbles_o145);
+        IndoorNavigation indoorNavigation_röchling = new IndoorNavigation("Röchling Hörsaal", getEntranceByName("Haupteingang"),
+                                                                          getRoomByName("Röchling Hörsaal"), images_röchling,
+                                                                          bubbles_röchling);
+
+        IndoorNavigation indoorNavigation_saphaus = new IndoorNavigation("SAP Apphaus", getEntranceByName("SAP Apphaus"),
+                                                                         getRoomByName("SAP Apphaus"), images_sap, bubbles_sap);
 
 
+        //Finally add all indoornavigations here
         list.add(indoornavigation_o145);
         list.add(indoorNavigation_röchling);
+        list.add(indoorNavigation_saphaus);
         return list;
     }
-
-
 
 
 }

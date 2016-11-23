@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity implements CustomSpinner.OnI
                 // positive button logic
 
 
-                populateGeofenceList(longitude, latitude, 200, 12 * 60 * 60 * 1000);
+                populateGeofenceList(longitude, latitude, 500, 12 * 60 * 60 * 1000);
                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(INDOORNAVIGATION_KEY,
                                                                                                    Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -413,7 +413,7 @@ public class MainActivity extends AppCompatActivity implements CustomSpinner.OnI
             double longitudeRoom = dataProvider.getRoomByName(query).getLongitude();
             map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_room_black_24dp)).position(
                     new LatLng(longitudeRoom, latitudeRoom)).title(
-                    "Room " + roomName + " at " + dataProvider.getRoomByName(roomName).getFloor() + ". Floor")).showInfoWindow();
+                    "Room " + roomName + " at " + dataProvider.getRoomByName(roomName).getFloor() + ". floor")).showInfoWindow();
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(longitudeRoom, latitudeRoom), 17));
             // Zoom in, animating the camera.
             map.animateCamera(CameraUpdateFactory.zoomIn());
@@ -431,7 +431,7 @@ public class MainActivity extends AppCompatActivity implements CustomSpinner.OnI
 
             map.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_room_black_24dp)).position(
                     new LatLng(longitudeRoom, latitudeRoom)).title(
-                    "Room " + roomName + " at" + dataProvider.getRoomByName(roomName).getFloor() + " Floor")).showInfoWindow();
+                    "Room " + roomName + " at " + dataProvider.getRoomByName(roomName).getFloor() + ". floor")).showInfoWindow();
 
             /*map.addMarker(new MarkerOptions().icon(
                     BitmapDescriptorFactory.fromResource(R.drawable.ic_arrow_drop_down_circle_black_24dp)).position(

@@ -141,127 +141,129 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         images_o145.add(R.drawable.o145_pic9);
 
         List<Integer> images_o151 = new ArrayList<>();
-        images_o151.add(R.drawable.O151_1);
-        images_o151.add(R.drawable.O151_2);
-        images_o151.add(R.drawable.O151_3);
-        images_o151.add(R.drawable.O151_4);
-        images_o151.add(R.drawable.O151_5);
-        images_o151.add(R.drawable.O151_6);
-        images_o151.add(R.drawable.O151_7);
-        images_o151.add(R.drawable.O151_8);
-        images_o151.add(R.drawable.O151_9);
-        images_o151.add(R.drawable.O151_10);
-        images_o151.add(R.drawable.O151_11);
+        images_o151.add(R.drawable.o151_1);
+        images_o151.add(R.drawable.o151_2);
+        images_o151.add(R.drawable.o151_3);
+        images_o151.add(R.drawable.o151_4);
+        images_o151.add(R.drawable.o151_5);
+        images_o151.add(R.drawable.o151_6);
+        images_o151.add(R.drawable.o151_7);
+        images_o151.add(R.drawable.o151_8);
+        images_o151.add(R.drawable.o151_9);
+        images_o151.add(R.drawable.o151_10);
+        images_o151.add(R.drawable.o151_11);
 
         List<Integer> images_o148 = new ArrayList<>();
-        images_o148.add(R.drawable.O148_1);
-        images_o148.add(R.drawable.O148_2);
-        images_o148.add(R.drawable.O148_3);
-        images_o148.add(R.drawable.O148_4);
-        images_o148.add(R.drawable.O148_5);
-        images_o148.add(R.drawable.O148_6);
-        images_o148.add(R.drawable.O148_7);
-        images_o148.add(R.drawable.O148_8);
-        images_o148.add(R.drawable.O148_9);
-        images_o148.add(R.drawable.O148_10);
+        images_o148.add(R.drawable.o148_1);
+        images_o148.add(R.drawable.o148_2);
+        images_o148.add(R.drawable.o148_3);
+        images_o148.add(R.drawable.o148_4);
+        images_o148.add(R.drawable.o148_5);
+        images_o148.add(R.drawable.o148_6);
+        images_o148.add(R.drawable.o148_7);
+        images_o148.add(R.drawable.o148_8);
+        images_o148.add(R.drawable.o148_9);
+        images_o148.add(R.drawable.o148_10);
 
         List<Integer> images_o142 = new ArrayList<>();
-        images_o142.add(R.drawable.O142_1);
-        images_o142.add(R.drawable.O142_2);
-        images_o142.add(R.drawable.O142_3);
-        images_o142.add(R.drawable.O142_4);
-        images_o142.add(R.drawable.O142_5);
-        images_o142.add(R.drawable.O142_6);
-        images_o142.add(R.drawable.O142_7);
-        images_o142.add(R.drawable.O142_8);
-        images_o142.add(R.drawable.O142_9);
+        images_o142.add(R.drawable.o142_1);
+        images_o142.add(R.drawable.o142_2);
+        images_o142.add(R.drawable.o142_3);
+        images_o142.add(R.drawable.o142_4);
+        images_o142.add(R.drawable.o142_5);
+        images_o142.add(R.drawable.o142_6);
+        images_o142.add(R.drawable.o142_7);
+        images_o142.add(R.drawable.o142_8);
+        images_o142.add(R.drawable.o142_9);
 
         List<Integer> images_o138 = new ArrayList<>();
-        images_o138.add(R.drawable.O138_1);
-        images_o138.add(R.drawable.O138_2);
-        images_o138.add(R.drawable.O138_3);
-        images_o138.add(R.drawable.O138_4);
-        images_o138.add(R.drawable.O138_5);
-        images_o138.add(R.drawable.O138_6);
-        images_o138.add(R.drawable.O138_7);
+        images_o138.add(R.drawable.o138_1);
+        images_o138.add(R.drawable.o138_2);
+        images_o138.add(R.drawable.o138_3);
+        images_o138.add(R.drawable.o138_4);
+        images_o138.add(R.drawable.o138_5);
+        images_o138.add(R.drawable.o138_6);
+        images_o138.add(R.drawable.o138_7);
+
 
         List<Integer> images_o135 = new ArrayList<>();
-        images_o135.add(R.drawable.O135_1);
-        images_o135.add(R.drawable.O135_2);
-        images_o135.add(R.drawable.O135_3);
-        images_o135.add(R.drawable.O135_4);
-        images_o135.add(R.drawable.O135_5);
-        images_o135.add(R.drawable.O135_6);
-        images_o135.add(R.drawable.O135_7);
-        images_o135.add(R.drawable.O135_8);
+        images_o135.add(R.drawable.o135_1);
+        images_o135.add(R.drawable.o135_2);
+        images_o135.add(R.drawable.o135_3);
+        images_o135.add(R.drawable.o135_4);
+        images_o135.add(R.drawable.o135_5);
+        images_o135.add(R.drawable.o135_6);
+        images_o135.add(R.drawable.o135_7);
+        images_o135.add(R.drawable.o135_8);
+
 
         List<Integer> images_o133 = new ArrayList<>();
-        images_o133.add(R.drawable.O133_1);
-        images_o133.add(R.drawable.O133_2);
-        images_o133.add(R.drawable.O133_3);
-        images_o133.add(R.drawable.O133_4);
-        images_o133.add(R.drawable.O133_5);
-        images_o133.add(R.drawable.O133_6);
-        images_o133.add(R.drawable.O133_7);
-        images_o133.add(R.drawable.O133_8);
-        images_o133.add(R.drawable.O133_9);
+        images_o133.add(R.drawable.o133_1);
+        images_o133.add(R.drawable.o133_2);
+        images_o133.add(R.drawable.o133_3);
+        images_o133.add(R.drawable.o133_4);
+        images_o133.add(R.drawable.o133_5);
+        images_o133.add(R.drawable.o133_6);
+        images_o133.add(R.drawable.o133_7);
+        images_o133.add(R.drawable.o133_8);
+        images_o133.add(R.drawable.o133_9);
 
         List<Integer> images_o131 = new ArrayList<>();
-        images_o131.add(R.drawable.O131_1);
-        images_o131.add(R.drawable.O131_2);
-        images_o131.add(R.drawable.O131_3);
-        images_o131.add(R.drawable.O131_4);
-        images_o131.add(R.drawable.O131_5);
-        images_o131.add(R.drawable.O131_6);
-        images_o131.add(R.drawable.O131_7);
-        images_o131.add(R.drawable.O131_8);
-        images_o131.add(R.drawable.O131_9);
-        images_o131.add(R.drawable.O131_10);
-        images_o131.add(R.drawable.O131_11);
+        images_o131.add(R.drawable.o131_1);
+        images_o131.add(R.drawable.o131_2);
+        images_o131.add(R.drawable.o131_3);
+        images_o131.add(R.drawable.o131_4);
+        images_o131.add(R.drawable.o131_5);
+        images_o131.add(R.drawable.o131_6);
+        images_o131.add(R.drawable.o131_7);
+        images_o131.add(R.drawable.o131_8);
+        images_o131.add(R.drawable.o131_9);
+        images_o131.add(R.drawable.o131_10);
+        images_o131.add(R.drawable.o131_11);
 
         List<Integer> images_o129 = new ArrayList<>();
-        images_o129.add(R.drawable.O129_1);
-        images_o129.add(R.drawable.O129_2);
-        images_o129.add(R.drawable.O129_3);
-        images_o129.add(R.drawable.O129_4);
-        images_o129.add(R.drawable.O129_5);
-        images_o129.add(R.drawable.O129_6);
-        images_o129.add(R.drawable.O129_7);
-        images_o129.add(R.drawable.O129_8);
-        images_o129.add(R.drawable.O129_9);
-        images_o129.add(R.drawable.O129_10);
-        images_o129.add(R.drawable.O129_11);
-        images_o129.add(R.drawable.O129_12);
+        images_o129.add(R.drawable.o129_1);
+        images_o129.add(R.drawable.o129_2);
+        images_o129.add(R.drawable.o129_3);
+        images_o129.add(R.drawable.o129_4);
+        images_o129.add(R.drawable.o129_5);
+        images_o129.add(R.drawable.o129_6);
+        images_o129.add(R.drawable.o129_7);
+        images_o129.add(R.drawable.o129_8);
+        images_o129.add(R.drawable.o129_9);
+        images_o129.add(R.drawable.o129_10);
+        images_o129.add(R.drawable.o129_11);
+        images_o129.add(R.drawable.o129_12);
 
         List<Integer> images_o128 = new ArrayList<>();
-        images_o128.add(R.drawable.O128_1);
-        images_o128.add(R.drawable.O128_2);
-        images_o128.add(R.drawable.O128_3);
-        images_o128.add(R.drawable.O128_4);
-        images_o128.add(R.drawable.O128_5);
-        images_o128.add(R.drawable.O128_6);
-        images_o128.add(R.drawable.O128_7);
-        images_o128.add(R.drawable.O128_8);
-        images_o128.add(R.drawable.O128_9);
-        images_o128.add(R.drawable.O128_10);
-        images_o128.add(R.drawable.O128_11);
-        images_o128.add(R.drawable.O128_12);
-        images_o128.add(R.drawable.O128_13);
+        images_o128.add(R.drawable.o128_1);
+        images_o128.add(R.drawable.o128_2);
+        images_o128.add(R.drawable.o128_3);
+        images_o128.add(R.drawable.o128_4);
+        images_o128.add(R.drawable.o128_5);
+        images_o128.add(R.drawable.o128_6);
+        images_o128.add(R.drawable.o128_7);
+        images_o128.add(R.drawable.o128_8);
+        images_o128.add(R.drawable.o128_9);
+        images_o128.add(R.drawable.o128_10);
+        images_o128.add(R.drawable.o128_11);
+        images_o128.add(R.drawable.o128_12);
+        images_o128.add(R.drawable.o128_13);
 
         List<Integer> images_o126 = new ArrayList<>();
-        images_o126.add(R.drawable.O126_1);
-        images_o126.add(R.drawable.O126_2);
-        images_o126.add(R.drawable.O126_3);
-        images_o126.add(R.drawable.O126_4);
-        images_o126.add(R.drawable.O126_5);
-        images_o126.add(R.drawable.O126_6);
-        images_o126.add(R.drawable.O126_7);
-        images_o126.add(R.drawable.O126_8);
-        images_o126.add(R.drawable.O126_9);
-        images_o126.add(R.drawable.O126_10);
-        images_o126.add(R.drawable.O126_11);
-        images_o126.add(R.drawable.O126_12);
-        images_o126.add(R.drawable.O126_13);
+        images_o126.add(R.drawable.o126_1);
+        images_o126.add(R.drawable.o126_2);
+        images_o126.add(R.drawable.o126_3);
+        images_o126.add(R.drawable.o126_4);
+        images_o126.add(R.drawable.o126_5);
+        images_o126.add(R.drawable.o126_6);
+        images_o126.add(R.drawable.o126_7);
+        images_o126.add(R.drawable.o126_8);
+        images_o126.add(R.drawable.o126_9);
+        images_o126.add(R.drawable.o126_10);
+        images_o126.add(R.drawable.o126_11);
+        images_o126.add(R.drawable.o126_12);
+        images_o126.add(R.drawable.o126_13);
 
         List<Integer> images_röchling = new ArrayList<>();
         images_röchling.add(R.drawable.h_pic0);
@@ -272,11 +274,11 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         images_röchling.add(R.drawable.h_pic5);
 
         List<Integer> images_manfred = new ArrayList<>();
-        images_manfred.add(R.drawable.SN163_1);
-        images_manfred.add(R.drawable.SN163_2);
-        images_manfred.add(R.drawable.SN163_3);
-        images_manfred.add(R.drawable.SN163_4);
-        images_manfred.add(R.drawable.SN163_5);
+        images_manfred.add(R.drawable.sn163_1);
+        images_manfred.add(R.drawable.sn163_2);
+        images_manfred.add(R.drawable.sn163_3);
+        images_manfred.add(R.drawable.sn163_4);
+        images_manfred.add(R.drawable.sn163_5);
 
 
 
@@ -317,6 +319,45 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         bubbles_sap.add("Go left");
         bubbles_sap.add("Welcome to Sap Apphaus Room");
 
+        List<String> bubbles_manfred = new ArrayList<>();
+        bubbles_manfred.add("Go to the stairs");
+        bubbles_manfred.add("Go upstairs to the 1st floor");
+        bubbles_manfred.add("Go left");
+        bubbles_manfred.add("Go to the door");
+        bubbles_manfred.add("You have arrived to the room!");
+
+        List<String> bubbles_o151 = new ArrayList<>();
+        bubbles_o151.add("Go to the stairs");
+        bubbles_o151.add("Go upstairs to the 1st floor");
+        bubbles_o151.add("Go left");
+        bubbles_o151.add("Go upstairs");
+        bubbles_o151.add("Enter door on the right");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("You have arrived to the room!");
+
+        List<String> bubbles_o138 = new ArrayList<>();
+        bubbles_o138.add("Go to the stairs");
+        bubbles_o138.add("Go upstairs to the 1st floor");
+        bubbles_o138.add("Go left");
+        bubbles_o138.add("Go upstairs");
+        bubbles_o138.add("Turn left");
+        bubbles_o138.add("Go straight through the corridor");
+        bubbles_o138.add("You have arrived to the room!");
+
+        List<String> bubbles_o135 = new ArrayList<>();
+        bubbles_o135.add("Go to the stairs");
+        bubbles_o135.add("Go upstairs to the 1st floor");
+        bubbles_o135.add("Go right");
+        bubbles_o135.add("Go upstairs");
+        bubbles_o151.add("Go left");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("Go straight through the corridor");
+        bubbles_o151.add("You have arrived to the room!");
 
         //Here you create the indoornavigations
         //Carefull: Indoornavigation name and room name must be same
@@ -329,11 +370,22 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         IndoorNavigation indoorNavigation_saphaus = new IndoorNavigation("SAP Apphaus", getEntranceByName("SAP Apphaus"),
                                                                          getRoomByName("SAP Apphaus"), images_sap, bubbles_sap);
 
+        IndoorNavigation indoorNavigation_manfred = new IndoorNavigation("Manfred Lautenschläger Hörsaal", getEntranceByName("Haupteingang"), getRoomByName("Manfred Lautenschläger Hörsaal"),images_manfred,bubbles_manfred);
+
+        IndoorNavigation indoorNavigation_o151 = new IndoorNavigation("O151",getEntranceByName("Haupteingang"), getRoomByName("O151"),images_o151,bubbles_o151);
+        IndoorNavigation indoorNavigation_o135 = new IndoorNavigation("O135",getEntranceByName("Haupteingang"), getRoomByName("O135"),images_o151,bubbles_o135);
+        IndoorNavigation indoorNavigation_o138 = new IndoorNavigation("O138",getEntranceByName("Haupteingang"), getRoomByName("O138"),images_o151,bubbles_o138);
+        IndoorNavigation indoorNavigation_o155 = new IndoorNavigation("O145",getEntranceByName("Haupteingang"), getRoomByName("O145"),images_o145,bubbles_o145);
 
         //Finally add all indoornavigations here
         list.add(indoornavigation_o145);
         list.add(indoorNavigation_röchling);
         list.add(indoorNavigation_saphaus);
+        list.add(indoorNavigation_manfred);
+        list.add(indoorNavigation_o151);
+        list.add(indoorNavigation_o135);
+        list.add(indoorNavigation_o138);
+        list.add(indoorNavigation_o155);
         return list;
     }
 

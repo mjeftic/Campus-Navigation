@@ -69,6 +69,9 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         Room room_o129 = new Room("O129", 49.483439, 8.464123, 1);
         Room room_o128 = new Room("O128", 49.483487, 8.463959, 1);
         Room room_o126 = new Room("O126", 49.483570, 8.463787, 1);
+        Room room_sn169 = new Room("SN169", 49.483164, 8.46452, 1);
+        Room room_sn163 = new Room("SN163", 49.483093, 8.464727, 1);
+
 
 
         rooms.add(O145);
@@ -84,6 +87,8 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         rooms.add(room_o126);
         rooms.add(room_sap);
         rooms.add(RöchlingHörsaal);
+        rooms.add(room_sn169);
+        rooms.add(room_sn163);
         return rooms;
     }
 

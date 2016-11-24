@@ -140,6 +140,129 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         images_o145.add(R.drawable.o145_pic8);
         images_o145.add(R.drawable.o145_pic9);
 
+        List<Integer> images_o151 = new ArrayList<>();
+        images_o151.add(R.drawable.O151_1);
+        images_o151.add(R.drawable.O151_2);
+        images_o151.add(R.drawable.O151_3);
+        images_o151.add(R.drawable.O151_4);
+        images_o151.add(R.drawable.O151_5);
+        images_o151.add(R.drawable.O151_6);
+        images_o151.add(R.drawable.O151_7);
+        images_o151.add(R.drawable.O151_8);
+        images_o151.add(R.drawable.O151_9);
+        images_o151.add(R.drawable.O151_10);
+        images_o151.add(R.drawable.O151_11);
+
+        List<Integer> images_o148 = new ArrayList<>();
+        images_o148.add(R.drawable.O148_1);
+        images_o148.add(R.drawable.O148_2);
+        images_o148.add(R.drawable.O148_3);
+        images_o148.add(R.drawable.O148_4);
+        images_o148.add(R.drawable.O148_5);
+        images_o148.add(R.drawable.O148_6);
+        images_o148.add(R.drawable.O148_7);
+        images_o148.add(R.drawable.O148_8);
+        images_o148.add(R.drawable.O148_9);
+        images_o148.add(R.drawable.O148_10);
+
+        List<Integer> images_o142 = new ArrayList<>();
+        images_o142.add(R.drawable.O142_1);
+        images_o142.add(R.drawable.O142_2);
+        images_o142.add(R.drawable.O142_3);
+        images_o142.add(R.drawable.O142_4);
+        images_o142.add(R.drawable.O142_5);
+        images_o142.add(R.drawable.O142_6);
+        images_o142.add(R.drawable.O142_7);
+        images_o142.add(R.drawable.O142_8);
+        images_o142.add(R.drawable.O142_9);
+
+        List<Integer> images_o138 = new ArrayList<>();
+        images_o138.add(R.drawable.O138_1);
+        images_o138.add(R.drawable.O138_2);
+        images_o138.add(R.drawable.O138_3);
+        images_o138.add(R.drawable.O138_4);
+        images_o138.add(R.drawable.O138_5);
+        images_o138.add(R.drawable.O138_6);
+        images_o138.add(R.drawable.O138_7);
+
+        List<Integer> images_o135 = new ArrayList<>();
+        images_o135.add(R.drawable.O135_1);
+        images_o135.add(R.drawable.O135_2);
+        images_o135.add(R.drawable.O135_3);
+        images_o135.add(R.drawable.O135_4);
+        images_o135.add(R.drawable.O135_5);
+        images_o135.add(R.drawable.O135_6);
+        images_o135.add(R.drawable.O135_7);
+        images_o135.add(R.drawable.O135_8);
+
+        List<Integer> images_o133 = new ArrayList<>();
+        images_o133.add(R.drawable.O133_1);
+        images_o133.add(R.drawable.O133_2);
+        images_o133.add(R.drawable.O133_3);
+        images_o133.add(R.drawable.O133_4);
+        images_o133.add(R.drawable.O133_5);
+        images_o133.add(R.drawable.O133_6);
+        images_o133.add(R.drawable.O133_7);
+        images_o133.add(R.drawable.O133_8);
+        images_o133.add(R.drawable.O133_9);
+
+        List<Integer> images_o131 = new ArrayList<>();
+        images_o131.add(R.drawable.O131_1);
+        images_o131.add(R.drawable.O131_2);
+        images_o131.add(R.drawable.O131_3);
+        images_o131.add(R.drawable.O131_4);
+        images_o131.add(R.drawable.O131_5);
+        images_o131.add(R.drawable.O131_6);
+        images_o131.add(R.drawable.O131_7);
+        images_o131.add(R.drawable.O131_8);
+        images_o131.add(R.drawable.O131_9);
+        images_o131.add(R.drawable.O131_10);
+        images_o131.add(R.drawable.O131_11);
+
+        List<Integer> images_o129 = new ArrayList<>();
+        images_o129.add(R.drawable.O129_1);
+        images_o129.add(R.drawable.O129_2);
+        images_o129.add(R.drawable.O129_3);
+        images_o129.add(R.drawable.O129_4);
+        images_o129.add(R.drawable.O129_5);
+        images_o129.add(R.drawable.O129_6);
+        images_o129.add(R.drawable.O129_7);
+        images_o129.add(R.drawable.O129_8);
+        images_o129.add(R.drawable.O129_9);
+        images_o129.add(R.drawable.O129_10);
+        images_o129.add(R.drawable.O129_11);
+        images_o129.add(R.drawable.O129_12);
+
+        List<Integer> images_o128 = new ArrayList<>();
+        images_o128.add(R.drawable.O128_1);
+        images_o128.add(R.drawable.O128_2);
+        images_o128.add(R.drawable.O128_3);
+        images_o128.add(R.drawable.O128_4);
+        images_o128.add(R.drawable.O128_5);
+        images_o128.add(R.drawable.O128_6);
+        images_o128.add(R.drawable.O128_7);
+        images_o128.add(R.drawable.O128_8);
+        images_o128.add(R.drawable.O128_9);
+        images_o128.add(R.drawable.O128_10);
+        images_o128.add(R.drawable.O128_11);
+        images_o128.add(R.drawable.O128_12);
+        images_o128.add(R.drawable.O128_13);
+
+        List<Integer> images_o126 = new ArrayList<>();
+        images_o126.add(R.drawable.O126_1);
+        images_o126.add(R.drawable.O126_2);
+        images_o126.add(R.drawable.O126_3);
+        images_o126.add(R.drawable.O126_4);
+        images_o126.add(R.drawable.O126_5);
+        images_o126.add(R.drawable.O126_6);
+        images_o126.add(R.drawable.O126_7);
+        images_o126.add(R.drawable.O126_8);
+        images_o126.add(R.drawable.O126_9);
+        images_o126.add(R.drawable.O126_10);
+        images_o126.add(R.drawable.O126_11);
+        images_o126.add(R.drawable.O126_12);
+        images_o126.add(R.drawable.O126_13);
+
         List<Integer> images_röchling = new ArrayList<>();
         images_röchling.add(R.drawable.h_pic0);
         images_röchling.add(R.drawable.h_pic1);
@@ -147,6 +270,15 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         images_röchling.add(R.drawable.h_pic3);
         images_röchling.add(R.drawable.h_pic4);
         images_röchling.add(R.drawable.h_pic5);
+
+        List<Integer> images_manfred = new ArrayList<>();
+        images_manfred.add(R.drawable.SN163_1);
+        images_manfred.add(R.drawable.SN163_2);
+        images_manfred.add(R.drawable.SN163_3);
+        images_manfred.add(R.drawable.SN163_4);
+        images_manfred.add(R.drawable.SN163_5);
+
+
 
         List<Integer> images_sap = new ArrayList<>();
         images_sap.add(R.drawable.sap_0);

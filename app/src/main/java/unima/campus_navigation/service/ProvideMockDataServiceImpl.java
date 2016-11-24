@@ -57,7 +57,7 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
     public List<Room> generateMockRoomData() {
         List<Room> rooms = new ArrayList<>();
         Room O145 = new Room("O145", 49.483143, 8.464862, 1);
-        Room RöchlingHörsaal = new Room("Röchling Hörsaal", 49.483534, 8.465205, 2);
+        Room RöchlingHörsaal = new Room("Röchling Hörsaal", 49.483164, 8.46452, 2);
         Room room_sap = new Room("SAP Apphaus", 49.406861, 8.675556, 2);
         Room room_o142 = new Room("O142", 49.482683, 8.463662, 1);
         Room room_o148 = new Room("O145", 49.483122, 8.464966, 1);
@@ -69,8 +69,7 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         Room room_o129 = new Room("O129", 49.483439, 8.464123, 1);
         Room room_o128 = new Room("O128", 49.483487, 8.463959, 1);
         Room room_o126 = new Room("O126", 49.483570, 8.463787, 1);
-        Room room_sn169 = new Room("SN169", 49.483164, 8.46452, 1);
-        Room room_sn163 = new Room("SN163", 49.483093, 8.464727, 1);
+        Room room_sn163 = new Room("Manfred Lautenschläger Hörsaal", 49.483093, 8.464727, 1);
 
 
 
@@ -87,7 +86,6 @@ public class ProvideMockDataServiceImpl implements ProvideMockDataService {
         rooms.add(room_o126);
         rooms.add(room_sap);
         rooms.add(RöchlingHörsaal);
-        rooms.add(room_sn169);
         rooms.add(room_sn163);
         return rooms;
     }
